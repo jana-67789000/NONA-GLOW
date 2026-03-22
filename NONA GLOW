@@ -1,0 +1,62 @@
+import streamlit as st
+import time
+
+# 1. إعداد الهوية البصرية (النجوم والبالونات)
+st.set_page_config(page_title="Nona-Glow AI", page_icon="✨")
+
+def apply_pro_theme(gender_choice):
+    if "أنثى" in gender_choice:
+        # ثيم البنات: بينك، ثلج متساقط
+        st.markdown("<style>.stApp { background: #FFB6C1; }</style>", unsafe_allow_html=True)
+        st.snow() 
+        return "👸 نونا جلو - عالم الأناقة", "انتي جميلة، واليوم بداية تألقك! ✨"
+    else:
+        # ثيم الأولاد: كحلي فخم
+        st.markdown("<style>.stApp { background: #001F3F; }</style>", unsafe_allow_html=True)
+        return "💪 نونا جلو - وحش الرياضة", "البطل لا يتوقف، القمة بانتظارك! ⚡"
+
+# 2. القائمة الجانبية (تخصيص الجسم)
+with st.sidebar:
+    st.header("👤 ملفك الذكي")
+    gender = st.radio("الجنس", ["أنثى ✨", "ذكر ⚡"])
+    goal = st.selectbox("هدفك الرئيسي؟", ["خسارة وزن", "نحت منطقة معينة", "شد ترهلات"])
+    focus_areas = st.multiselect("مناطق التركيز:", ["البطن", "الأرداف", "الصدر/الظهر", "الذراعين"])
+
+title, quote = apply_pro_theme(gender)
+st.title(title)
+st.write(f"### {quote}")
+
+# 3. التحليل الذكي
+with st.expander("🔍 ابدأ تحليل جسمك (مجاني)", expanded=True):
+    col1, col2 = st.columns(2)
+    with col1:
+        w = st.number_input("الوزن (كجم)", 40, 200, 70)
+        activity = st.select_slider("نشاطك اليومي", ["خامل", "متوسط", "نشيط"])
+    with col2:
+        h = st.number_input("الطول (سم)", 120, 220, 160)
+        fast_style = st.selectbox("نظام الصيام المفضل", ["16:8", "20:4 (OMAD)", "14:10"])
+
+    if st.button("تحليل وبناء الخطة 🚀"):
+        st.balloons()
+        with st.status("جاري دمج البيانات بصرياً وسمعياً..."):
+            time.sleep(1.5)
+            st.write("✅ تم تحديد تمارين مخصصة لـ " + str(focus_areas))
+        st.success(f"تم! نظامك هو {fast_style} وسعراتك هي {int(w*24)} سعرة.")
+
+# 4. قسم الاشتراكات (باقات نونا الخاصة)
+st.markdown("---")
+st.subheader("💎 العضوية المميزة (مؤثرات صوتية VIP)")
+plans = {
+    "تجريبية (أسبوع) - 1.5 د.ك": 1.5,
+    "شهرية - 2.5 د.ك": 2.5,
+    "3 شهور - 7.5 د.ك": 7.5,
+    "6 شهور - 15 د.ك": 15,
+    "سنوية 🏆 - 30 د.ك": 30
+}
+selected_p = st.radio("اختر باقتك للوصول للمؤثرات الصوتية:", list(plans.keys()))
+
+if st.button(f"تفعيل باقة {selected_p} 💳"):
+    st.balloons()
+    st.write("### 🔊 تم فتح المؤثرات الصوتية والتشجيع!")
+    st.audio("https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3") 
+    st.info("💡 بمجرد الدفع، ستعمل الأصوات تلقائياً عند كل إنجاز!")
